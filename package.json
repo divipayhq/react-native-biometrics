@@ -1,6 +1,6 @@
 {
   "name": "react-native-biometrics",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "summary": "A React Native library for biometrics",
   "description": "React Native biometric functionality for signing and encryption",
   "main": "build/cjs/index.js",
@@ -12,7 +12,7 @@
     "build:cjs": "tsc --target es5 --outDir build/cjs --module commonjs",
     "build:esm": "tsc --target es5 --outDir build/esm --module esnext",
     "release": "npm run clean && npm run build && npm publish",
-    "prepare": "npm run build"
+    "prepack": "npm run build"
   },
   "keywords": [
     "react-native",
@@ -44,7 +44,7 @@
     "url": "https://github.com/divipayhq/react-native-biometrics/issues"
   },
   "devDependencies": {
-    "@types/react": "^17.0.0",
+    "@types/react": "^19.0.0",
     "typescript": "^5.0.4"
   }
 }
