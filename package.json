@@ -10,8 +10,7 @@
     "clean": "rm -rf build && rm -rf node_modules && yarn",
     "build": "yarn build:cjs && yarn build:esm",
     "build:cjs": "tsc --target es5 --outDir build/cjs --module commonjs",
-    "build:esm": "tsc --target es5 --outDir build/esm --module esnext",
-    "prepare": "yarn build"
+    "build:esm": "tsc --target es5 --outDir build/esm --module esnext"
   },
   "keywords": [
     "react-native",
