@@ -193,19 +193,23 @@ export default class ReactNativeBiometrics {
     /**
      * Returns promise that resolves to an object with object.keysExists = true | false
      * indicating if the keys were found to exist or not
+     * @param {Object} biometricKeysExistOptions
+     * @param {string} biometricKeysExistOptions.alias
      * @returns {Promise<Object>} Promise that resolves to object with details aobut the existence of keys
      */
-    biometricKeysExist(): Promise<BiometricKeysExistResult> {
-      return bridge.biometricKeysExist()
+    biometricKeysExist(biometricKeysExistOptions: BiometricKeysExistOptions): Promise<BiometricKeysExistResult> {
+      return bridge.biometricKeysExist(biometricKeysExistOptions)
     }
 
     /**
      * Returns promise that resolves to an object with true | false
      * indicating if the keys were properly deleted
+     * @param {Object} deleteKeysOptions
+     * @param {string} deleteKeysOptions.alias
      * @returns {Promise<Object>} Promise that resolves to an object with details about the deletion
      */
-    deleteKeys(): Promise<DeleteKeysResult> {
-      return bridge.deleteKeys()
+    deleteKeys(deleteKeysOptions: DeleteKeysOptions): Promise<DeleteKeysResult> {
+      return bridge.deleteKeys(deleteKeysOptions)
     }
 
     /**

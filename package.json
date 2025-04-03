@@ -11,7 +11,8 @@
     "build": "npm run build:cjs && npm run build:esm",
     "build:cjs": "tsc --target es5 --outDir build/cjs --module commonjs",
     "build:esm": "tsc --target es5 --outDir build/esm --module esnext",
-    "release": "npm run clean && npm run build && npm publish"
+    "release": "npm run clean && npm run build && npm publish",
+    "prepare": "npm run build"
   },
   "keywords": [
     "react-native",
@@ -37,12 +38,13 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "react-native": ">=0.60.0"
+    "react-native": ">=0.75.0"
   },
   "bugs": {
     "url": "https://github.com/SelfLender/react-native-biometrics/issues"
   },
   "devDependencies": {
-    "typescript": "^3.7.2"
+    "@types/react": "^17.0.0",
+    "typescript": "^5.0.4"
   }
 }
