@@ -25,11 +25,11 @@
     "touch-id",
     "face-id"
   ],
-  "homepage": "https://github.com/SelfLender/react-native-biometrics",
+  "homepage": "https://github.com/divipayhq/react-native-biometrics",
   "contributors": [],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SelfLender/react-native-biometrics.git"
+    "url": "git+https://github.com/divipayhq/react-native-biometrics.git"
   },
   "private": false,
   "author": {
@@ -41,7 +41,7 @@
     "react-native": ">=0.75.0"
   },
   "bugs": {
-    "url": "https://github.com/SelfLender/react-native-biometrics/issues"
+    "url": "https://github.com/divipayhq/react-native-biometrics/issues"
   },
   "devDependencies": {
     "@types/react": "^17.0.0",
