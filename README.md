@@ -164,6 +164,12 @@ rnBiometrics.isSensorAvailable()
 
 Generates a public private RSA 2048 key pair that will be stored in the device keystore.  Returns a `Promise` that resolves to an object providing details about the keys.
 
+__Options Object__
+
+| Parameter | Type | Description | iOS | Android |
+| --- | --- | --- | --- | --- |
+| alias | string | An optional string that uniquely identifies the key pair. Use this when multiple keys are required on the same device. | ✔ | ✔ |
+
 __Result Object__
 
 | Property | Type | Description |
@@ -177,7 +183,7 @@ import ReactNativeBiometrics from 'react-native-biometrics'
 
 const rnBiometrics = new ReactNativeBiometrics()
 
-rnBiometrics.createKeys()
+rnBiometrics.createKeys({ alias: 'myUsername' })
   .then((resultObject) => {
     const { publicKey } = resultObject
     console.log(publicKey)
@@ -188,6 +194,12 @@ rnBiometrics.createKeys()
 ### biometricKeysExist()
 
 Detects if keys have already been generated and exist in the keystore.  Returns a `Promise` that resolves to an object indicating details about the keys.
+
+__Options Object__
+
+| Parameter | Type | Description | iOS | Android |
+| --- | --- | --- | --- | --- |
+| alias | string | An optional string that uniquely identifies the key pair. Use this when multiple keys are required on the same device. | ✔ | ✔ |
 
 __Result Object__
 
@@ -201,7 +213,7 @@ __Example__
 import ReactNativeBiometrics from 'react-native-biometrics'
 
 const rnBiometrics = new ReactNativeBiometrics()
-rnBiometrics.biometricKeysExist()
+rnBiometrics.biometricKeysExist({ alias: 'myUsername' })
   .then((resultObject) => {
     const { keysExist } = resultObject
 
@@ -217,6 +229,12 @@ rnBiometrics.biometricKeysExist()
 
 Deletes the generated keys from the device keystore.  Returns a `Promise` that resolves to an object indicating details about the deletion.
 
+__Options Object__
+
+| Parameter | Type | Description | iOS | Android |
+| --- | --- | --- | --- | --- |
+| alias | string | A optional string that uniquely identifies the key pair. Use this when multiple keys are required on the same device. | ✔ | ✔ |
+
 __Result Object__
 
 | Property | Type | Description |
@@ -230,7 +248,7 @@ import ReactNativeBiometrics from 'react-native-biometrics'
 
 const rnBiometrics = new ReactNativeBiometrics()
 
-rnBiometrics.deleteKeys()
+rnBiometrics.deleteKeys({ alias: 'myUsername' })
   .then((resultObject) => {
     const { keysDeleted } = resultObject
 
@@ -255,6 +273,7 @@ __Options Object__
 | promptMessage | string | Message that will be displayed in the fingerprint or face id prompt | ✔ | ✔ |
 | payload | string | String of data to be signed by the RSA signature | ✔ | ✔ |
 | cancelButtonText | string | Text to be displayed for the cancel button on biometric prompts, defaults to `Cancel` | ✖ | ✔ |
+| alias | string | A string that uniquely identifies the key pair. Use this when multiple keys are required on the same device. | ✔ | ✔ |
 
 __Result Object__
 
@@ -276,7 +295,8 @@ const rnBiometrics = new ReactNativeBiometrics()
 
 rnBiometrics.createSignature({
     promptMessage: 'Sign in',
-    payload: payload
+    payload: payload,
+    alias: 'myUsername'
   })
   .then((resultObject) => {
     const { success, signature } = resultObject

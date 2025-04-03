@@ -36,7 +36,7 @@ import java.util.concurrent.Executors;
 
 public class ReactNativeBiometrics extends ReactContextBaseJavaModule {
 
-    protected String biometricKeyAlias = "biometric_key";
+    protected String biometricKeyName = "biometric_key";
 
     public ReactNativeBiometrics(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -45,6 +45,10 @@ public class ReactNativeBiometrics extends ReactContextBaseJavaModule {
     @Override
     public String getName() {
         return "ReactNativeBiometrics";
+    }
+
+    private String getBiometricKeyName(String alias) {
+        return alias != null ? biometricKeyName + "." + alias : biometricKeyName;
     }
 
     @ReactMethod
@@ -97,7 +101,8 @@ public class ReactNativeBiometrics extends ReactContextBaseJavaModule {
     public void createKeys(final ReadableMap params, Promise promise) {
         try {
             if (isCurrentSDKMarshmallowOrLater()) {
-                deleteBiometricKey();
+                String alias = params.getString("alias");
+                deleteBiometricKey(alias);
                 KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(KeyProperties.KEY_ALGORITHM_RSA, "AndroidKeyStore");
                 KeyGenParameterSpec keyGenParameterSpec = new KeyGenParameterSpec.Builder(biometricKeyAlias, KeyProperties.PURPOSE_SIGN)
                         .setDigests(KeyProperties.DIGEST_SHA256)
@@ -129,9 +134,10 @@ public class ReactNativeBiometrics extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void deleteKeys(Promise promise) {
-        if (doesBiometricKeyExist()) {
-            boolean deletionSuccessful = deleteBiometricKey();
+    public void deleteKeys(final ReadableMap params, Promise promise) {
+        String alias = params.getString("alias");
+        if (doesBiometricKeyExist(alias)) {
+            boolean deletionSuccessful = deleteBiometricKey(alias);
 
             if (deletionSuccessful) {
                 WritableMap resultMap = new WritableNativeMap();
@@ -158,13 +164,15 @@ public class ReactNativeBiometrics extends ReactContextBaseJavaModule {
                                 String promptMessage = params.getString("promptMessage");
                                 String payload = params.getString("payload");
                                 String cancelButtonText = params.getString("cancelButtonText");
+                                String alias = params.getString("alias");
                                 boolean allowDeviceCredentials = params.getBoolean("allowDeviceCredentials");
 
                                 Signature signature = Signature.getInstance("SHA256withRSA");
                                 KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
                                 keyStore.load(null);
 
-                                PrivateKey privateKey = (PrivateKey) keyStore.getKey(biometricKeyAlias, null);
+                                String biometricKeyName = getBiometricKeyName(alias);
+                                PrivateKey privateKey = (PrivateKey) keyStore.getKey(biometricKeyName, null);
                                 signature.initSign(privateKey);
 
                                 BiometricPrompt.CryptoObject cryptoObject = new BiometricPrompt.CryptoObject(signature);
@@ -237,9 +245,10 @@ public class ReactNativeBiometrics extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void biometricKeysExist(Promise promise) {
+    public void biometricKeysExist(final ReadableMap params, Promise promise) {
         try {
-            boolean doesBiometricKeyExist = doesBiometricKeyExist();
+            String alias = params.getString("alias");
+            boolean doesBiometricKeyExist = doesBiometricKeyExist(alias);
             WritableMap resultMap = new WritableNativeMap();
             resultMap.putBoolean("keysExist", doesBiometricKeyExist);
             promise.resolve(resultMap);
@@ -248,23 +257,24 @@ public class ReactNativeBiometrics extends ReactContextBaseJavaModule {
         }
     }
 
-    protected boolean doesBiometricKeyExist() {
+    protected boolean doesBiometricKeyExist(String alias) {
         try {
             KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
             keyStore.load(null);
 
-            return keyStore.containsAlias(biometricKeyAlias);
+            String biometricKeyName = getBiometricKeyName(alias);
+            return keyStore.containsAlias(biometricKeyName);
         } catch (Exception e) {
             return false;
         }
     }
 
-    protected boolean deleteBiometricKey() {
+    protected boolean deleteBiometricKey(String alias) {
         try {
             KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
             keyStore.load(null);
-
-            keyStore.deleteEntry(biometricKeyAlias);
+            String biometricKeyName = getBiometricKeyName(alias);
+            keyStore.deleteEntry(biometricKeyName);
             return true;
         } catch (Exception e) {
             return false;
